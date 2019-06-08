@@ -33,7 +33,18 @@ public:
     static cocos2d::Scene* createScene();
 
     virtual bool init();
-    
+	
+	//関数の宣言 overrideは型が間違っていないかのチェックの為
+	void update(float delta) override;
+
+	//スプライト cocos2dをつけないとエラーになる
+	cocos2d::Sprite* sprite;
+
+	int counter;
+
+	//今の移動方向　0左 1下 2右 3上
+	int state;
+
     // a selector callback
     void menuCloseCallback(cocos2d::Ref* pSender);
     

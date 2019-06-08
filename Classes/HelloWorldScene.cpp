@@ -101,20 +101,38 @@ bool HelloWorld::init()
         this->addChild(label, 1);
     }
 
-    // add "HelloWorld" splash screen"
-    auto sprite = Sprite::create("HelloWorld.png");
-    if (sprite == nullptr)
-    {
-        problemLoading("'HelloWorld.png'");
-    }
-    else
-    {
-        // position the sprite on the center of the screen
-        sprite->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
+	//テクスチャファイル名を指定して、スプライトを作成
+	sprite = Sprite::create("a.png");
+	//シーングラフにつなぐ
+	this->addChild(sprite);
 
-        // add the sprite as a child to this layer
-        this->addChild(sprite, 0);
-    }
+	//cocosは画面の左下が(0,0)になる
+
+	//表示座標を指定
+	sprite->setPosition(Vec2(940.0f, 600.0f));
+	//回転角を指定（角度）
+	//sprite->setRotation(45.0f);
+	//拡縮を指定(横倍、縦倍)
+	sprite->setScale(0.3f);
+	//左右反転
+	//sprite->setFlippedX(true);
+	//上下反転
+	//sprite->setFlippedY(true);
+	//非表示にする
+	//sprite->setVisible(false);
+	//色あいを設定 16進数以外に10進数でも入力可能
+	sprite->setColor(Color3B(255, 0, 0));
+	//不透明度を設定 色合いの数値と同様
+	sprite->setOpacity(255);
+
+	//updateが呼び出されるようにする
+	this->scheduleUpdate();
+
+	counter = 0;
+
+	//左移動から
+	state = 0;
+
     return true;
 }
 
@@ -130,4 +148,72 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
     //_eventDispatcher->dispatchEvent(&customEndEvent);
 
 
+}
+
+void HelloWorld::update(float delta) 
+{
+	Vec2 pos;
+	switch (state)
+	{
+	//左
+	case 0:
+		pos = sprite->getPosition();
+		pos.x += -5.0f;
+		pos.y += 0.0f;
+		sprite->setPosition(pos);
+		//左端に達したら
+		if (pos.x <=200) {
+			state = 1;//stateが1になる
+		}
+		break;
+	//下
+	case 1:
+		pos = sprite->getPosition();
+		pos.x += 0.0f;
+		pos.y += -5.0f;
+		sprite->setPosition(pos);
+		if (pos.y <= 100) {
+			state = 2;
+		}
+		break;
+	//右
+	case 2: 
+		pos = sprite->getPosition();
+		pos.x += 5.0f;
+		pos.y += 0.0f;
+		sprite->setPosition(pos);
+		if (pos.x >= 940) {
+			state = 3;
+		}
+		break;
+	//上
+	case 3:
+	default:
+		pos = sprite->getPosition();
+		pos.x += 0.0f;
+		pos.y += 5.0f;
+		sprite->setPosition(pos);
+		if (pos.y>=600) {
+			state = 0;
+		}
+		break;
+	}
+	//ここに更新処理を書く
+	//スプライトの現在座標を取得
+	//Vec2 pos = sprite->getPosition();
+	//座標を移動させる
+	//pos += Vec2(1.0f, 1.0f);
+	//pos.x += -1.0f;
+	//pos.y += 0.0f;
+	//移動後の座標を反映
+	//sprite->setPosition(pos);
+
+	/*counter++;
+	if (counter > 300)
+	{
+		counter = 300;
+	}
+	float opacity = counter / 300.0f * 255.0f;
+	opacity = 255.0f - opacity;
+	sprite->setOpacity(opacity);*/
 }
