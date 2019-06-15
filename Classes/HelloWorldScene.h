@@ -40,6 +40,8 @@ public:
 	//スプライト cocos2dをつけないとエラーになる
 	cocos2d::Sprite* sprite;
 
+	cocos2d::Sprite* sprite2;
+
 	int counter;
 
 	//今の移動方向　0左 1下 2右 3上
