@@ -38,9 +38,12 @@ public:
 	void update(float delta) override;
 
 	//スプライト cocos2dをつけないとエラーになる
-	cocos2d::Sprite* sprite;
+	/*cocos2d::Sprite* sprite;
 
-	cocos2d::Sprite* sprite2;
+	cocos2d::Sprite* sprite2;*/
+
+	//スプライトの配列
+	cocos2d::Sprite* sprite[100];
 
 	int counter;
 

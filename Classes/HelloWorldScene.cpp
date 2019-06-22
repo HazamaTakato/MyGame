@@ -100,47 +100,83 @@ bool HelloWorld::init()
         // add the label as a child to this layer
         this->addChild(label, 1);
     }
+	
+	//乱数の初期化
+	//Random r = new Random();
+	srand(time(nullptr));
+
+	for (int i = 0; i < 1; i++)
+	{
+		int state = 0;
+		float mx, my;
+		//-250～250までの乱数
+		mx = (float)rand() / RAND_MAX * 500 - 250;
+		my = (float)rand() / RAND_MAX * 500 - 250;
+
+		sprite[i] = Sprite::create("a.png");
+		this->addChild(sprite[i]);
+		sprite[i]->setPosition(Vec2(1100, 600));
+		sprite[i]->setColor(Color3B(255, 0, 0));
+		sprite[i]->setScale(0.3f);
+
+		MoveBy* action1 = MoveBy::create(5.0f, Vec2(-900, 0));
+		FadeOut* action2 = FadeOut::create(6.0f);
+        sprite[i]->runAction(action1);
+		sprite[i]->runAction(action2);
+
+	}
 
 	//テクスチャファイル名を指定して、スプライトを作成
-	sprite = Sprite::create("sample08.png");
-	sprite2 = Sprite::create("a.png");
-	//シーングラフにつなぐ
-	this->addChild(sprite);
-	this->addChild(sprite2);
+	//sprite = Sprite::create("a.png");
+	//sprite2 = Sprite::create("a.png");
+	////シーングラフにつなぐ
+	//this->addChild(sprite);
+	//this->addChild(sprite2);
 
-	//cocosは画面の左下が(0,0)になる
+	////cocosは画面の左下が(0,0)になる
 
-	//表示座標を指定
-	sprite->setPosition(Vec2(visibleSize.width / 2.0f, visibleSize.height / 2.0f));
-	sprite2->setPosition(Vec2(visibleSize.width / 2.0f, visibleSize.height / 2.0f));
-	//回転角を指定（角度）
-	//sprite->setRotation(45.0f);
-	//拡縮を指定(横倍、縦倍)
-	sprite->setScale(3.0f);
-	sprite->getTexture()->setAliasTexParameters();
-	sprite2->setScale(0.3f);
-	//左右反転
-	//sprite->setFlippedX(true);
-	//上下反転
-	//sprite->setFlippedY(true);
-	//非表示にする
-	//sprite->setVisible(false);
-	//色あいを設定 16進数以外に10進数でも入力可能
-	sprite->setColor(Color3B(255, 255, 255));
-	sprite2->setColor(Color3B(0, 0, 255));
-	//不透明度を設定 色合いの数値と同様
-	sprite->setOpacity(255);
-	sprite2->setOpacity(0);
+	////表示座標を指定
+	//sprite->setPosition(Vec2(300, visibleSize.height / 2.0f));
+	//sprite2->setPosition(Vec2(visibleSize.width / 2.0f, visibleSize.height / 2.0f));
+	////回転角を指定（角度）
+	////sprite->setRotation(45.0f);
+	////拡縮を指定(横倍、縦倍)
+	////sprite->setScale(3.0f);
+	////sprite->getTexture()->setAliasTexParameters();
+	//sprite->setScale(0.3f);
+	//sprite2->setScale(0.3f);
+	////左右反転
+	////sprite->setFlippedX(true);
+	////上下反転
+	////sprite->setFlippedY(true);
+	////非表示にする
+	////sprite->setVisible(false);
+	////色あいを設定 16進数以外に10進数でも入力可能
+	//sprite->setColor(Color3B(0, 0, 255));
+	//sprite2->setColor(Color3B(255, 0, 0));
+	////不透明度を設定 色合いの数値と同様
+	////sprite->setOpacity(255);
+	////sprite2->setOpacity(0);
 
-	//sprite->setAnchorPoint(Vec2(0, 1));
+	////sprite->setAnchorPoint(Vec2(0, 1));
 
-	//updateが呼び出されるようにする
+	////updateが呼び出されるようにする
 	this->scheduleUpdate();
 
-	counter = 0;
-
-	//左移動から
-	state = 0;
+	////アクションの作成（１秒かけて　右に２００　上に１００動く）
+	//MoveBy* action1 = MoveBy::create(1.0f, Vec2(300, 100));
+	//MoveBy* action2 = MoveBy::create(1.0f, Vec2(300, 100));
+	////MoveTo* action1 = MoveTo::create(1.0f, Vec2(200, 100));
+	////ScaleTo* action1 = ScaleTo::create(1.0f, 5.0f);
+	////JumpTo* action1 = JumpTo::create(1.0f, Vec2(200, 100), 300.0f, 1);
+	///*ccBezierConfig conf;
+	//conf.controlPoint_1 = Vec2(200, 200);
+	//conf.controlPoint_2 = Vec2(500, 500);
+	//conf.endPosition = Vec2(800, 200);*/
+	////BezierTo* action1 = BezierTo::create(2.0f, conf);
+	////EaseInOut* action2 = EaseInOut::create(action1, 2.0f);
+	//sprite->runAction(action1->clone());
+	//sprite2->runAction(action1);
 
     return true;
 }
@@ -161,171 +197,5 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
 
 void HelloWorld::update(float delta) 
 {
-	//Vec2 pos;
-	//switch (state)
-	//{
-	////左
-	//case 0:
-	//	pos = sprite->getPosition();
-	//	pos.x += -5.0f;
-	//	pos.y += 0.0f;
-	//	sprite->setPosition(pos);
-	//	//左端に達したら
-	//	if (pos.x <=200) {
-	//		state = 1;//stateが1になる
-	//	}
-	//	break;
-	////下
-	//case 1:
-	//	pos = sprite->getPosition();
-	//	pos.x += 0.0f;
-	//	pos.y += -5.0f;
-	//	sprite->setPosition(pos);
-	//	if (pos.y <= 100) {
-	//		state = 2;
-	//	}
-	//	break;
-	////右
-	//case 2: 
-	//	pos = sprite->getPosition();
-	//	pos.x += 5.0f;
-	//	pos.y += 0.0f;
-	//	sprite->setPosition(pos);
-	//	if (pos.x >= 940) {
-	//		state = 3;
-	//	}
-	//	break;
-	////上
-	//case 3:
-	//default:
-	//	pos = sprite->getPosition();
-	//	pos.x += 0.0f;
-	//	pos.y += 5.0f;
-	//	sprite->setPosition(pos);
-	//	if (pos.y>=600) {
-	//		state = 0;
-	//	}
-	//	break;
-	//}
-	//ここに更新処理を書く
-	//スプライトの現在座標を取得
-	//Vec2 pos = sprite->getPosition();
-	//座標を移動させる
-	//pos += Vec2(1.0f, 1.0f);
-	//pos.x += -1.0f;
-	//pos.y += 0.0f;
-	//移動後の座標を反映
-	//sprite->setPosition(pos);
-
-	/*counter++;
-	if (counter > 300)
-	{
-		counter = 300;
-	}
-	float opacity = counter / 300.0f * 255.0f;
-	opacity = 255.0f - opacity;
-	sprite->setOpacity(opacity);*/
-
-	////左上を中心に回転
-	//float angl = sprite->getRotation();
-	//angl += 30;
-	//sprite->setRotation(angl);
-
-	//赤から青に３秒かけて変化
-	/*counter++;
-	if (counter > 180)
-	{
-		counter = 180;
-	}
-	float opacity = counter / 180.0f * 255.0f;
-	float opacity2 = counter / 180.0f * 255.0f;
-	opacity = 255.0f - opacity;
-	opacity2 = 0.0f + opacity2;
-	sprite->setColor(Color3B(opacity,0,opacity2));*/
-
-	//前キャラがゆっくりフェードアウト
-	//裏キャラがフェードイン
-	/*counter++;
-	if (counter > 600)
-	{
-		counter = 600;
-	}
-	float opacity = counter / 600.0f * 255.0f;
-	float opacity2 = counter / 600.0f*255.0f;
-	opacity = 255.0f - opacity;
-	opacity2 = 0.0f + opacity2;
-	sprite->setOpacity(opacity);
-	sprite2->setOpacity(opacity2);*/
-
-	//左右往復しながら左に進んでるとき左、右なら右にする;
-
-	//Vec2 pos;
-	//switch (state)
-	//{
-	////左
-	//case 0:
-	//	pos = sprite->getPosition();
-	//	pos.x += -5.0f;
-	//	pos.y += 0.0f;
-	//	sprite->setPosition(pos);
-	//	sprite->setFlippedX(true);
-	//	//左端に達したら
-	//	if (pos.x <=200) {
-	//		state = 1;//stateが1になる
-	//	}
-	//	break;
-	////右
-	//case 1: 
- //   default:
-	//	pos = sprite->getPosition();
-	//	pos.x += 5.0f;
-	//	pos.y += 0.0f;
-	//	sprite->setPosition(pos);
-	//	sprite->setFlippedX(false);
-	//	if (pos.x >= 1080) {
-	//		state = 0;
-	//	}
-	//	break;
-	//}
-	////ここに更新処理を書く
-	////スプライトの現在座標を取得
-	//pos = sprite->getPosition();
-	////座標を移動させる
-	//pos += Vec2(1.0f, 0.0f);
-	//pos.x += -1.0f;
-	////移動後の座標を反映
-	//sprite->setPosition(pos);
-
-    //setTextureRect でパターンアニメーション
-	Vec2 pos;
-	int x;
-
-	switch (state)
-	{
-	//左
-	case 0:
-		pos = sprite->getPosition();
-		x = sprite->getTextureRect(Rect(x));
-		pos.x += -5.0f;
-		pos.y += 0.0f;
-		sprite->setPosition(pos);
-		sprite->setTextureRect(Rect(0, 32, 32, 32));
-		//左端に達したら
-		if(pos.x <=200) {
-			state = 1;//stateが1になる
-		}
-		break;
-	//右
-	case 1: 
-    default:
-		pos = sprite->getPosition();
-		pos.x += 5.0f;
-		pos.y += 0.0f;
-		sprite->setPosition(pos);
-		sprite->setTextureRect(cocos2d::Rect(0, 64, 32, 32));
-		if(pos.x >= 1080) {
-			state = 0;
-		}
-		break;
-	}
+	
 }
